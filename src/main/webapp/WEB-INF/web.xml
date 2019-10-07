@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<web-app version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+
+
+  <!-- Servlet Context Listener ======================================= -->
+
+  <!--
+    - Declare Spring context listener which sets up the Spring Application Context
+    - containing all Cocoon components (and user defined beans as well).
+    -->
+
+  <!--
+    - Declare Spring request listener which sets up the required RequestAttributes
+    - to support Springs and Cocoon custom bean scopes like the request scope or the
+    - session scope.
+    -->
+  <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+
+  <!-- Servlet Configuration ========================================== -->
+
+  <!--
+    - Servlet that dispatches requests to the Spring managed block servlets
+    -->
+
+
+  <!-- URL space mappings ============================================= -->
+
+  <!--
+    - Cocoon handles all the URL space assigned to the webapp using its sitemap.
+    - It is recommended to leave it unchanged. Under some circumstances though
+    - (like integration with proprietary webapps or servlets) you might have
+    - to change this parameter.
+    -->
+  <!--配置spring容器-->
+
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:spring_root.xml</param-value>
+  </context-param>
+  
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <servlet>
+    <!--配置springMVC容器,名称为webs-->
+
+    <servlet-name>webs</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:spring_web.xml</param-value>
+    </init-param>
+  </servlet>
+
+  <!--截取请求交给webs-->
+  <servlet-mapping>
+    <servlet-name>webs</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+</web-app>
+        
